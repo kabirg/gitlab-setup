@@ -16,7 +16,7 @@ We'll use *example.com* as an example domain.
       > **SOA record**: contains information about your domain.
   - Create an A record in the hosted zone and point it to the public IP of your Gitlab server.
   - Validate DNS is setup for your domain:
-      > ***nslookup example.com [NAMESERVER]***
+      > ***nslookup example.com NAMESERVER_FQDN***
       >
       > For the **nslookup** command, you can use the domain name of any of your nameservers (found in the NS record)
 
