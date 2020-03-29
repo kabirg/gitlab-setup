@@ -27,6 +27,7 @@ We'll go with RSA since it's the most common.
 Go with option 1 or 2 below based on whether or not you have an existing SSH key.
 
 By the end, you should be able to run the following to validate SSH connectivity:
+
     ssh -T git@example.com -p 2222
 
 You should get a message saying:
