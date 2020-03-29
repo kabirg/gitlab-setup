@@ -47,7 +47,7 @@ SSH into the Gitlab instance...
         sudo docker exec -it gitlab /bin/bash
 
   - Make the target location if it doesn't already exist:
-  
+
         mkdir -p /etc/gitlab/ssl
         chmod 755 /etc/gitlab/ssl
 
@@ -55,7 +55,7 @@ SSH into the Gitlab instance...
   - Run ***sudo gitlab-ctl reconfigure***
 
 
-## Update the NGINX Configuration
+## Update GitLab's NGINX Configuration with the Certificate Information
 Back in the docker-compose file:
   - Update **external_url** to us *https* instead of *http*
   - Add the following code to the GITLAB_OMNIBUS_CONFIG (under the external_url):
