@@ -75,6 +75,8 @@ This pipeline will run automatically once it's committed to your Gitlab project 
 
 **Steps:**
   - Clone your test project down locally if you haven't already.
+    - Make the project public for now so you can clone it.
+        > Settings > General > 'Visibility, project features, permissions' > Project Visibility > Select 'Public'
   - Copy/paste the **gitlab-ci.yml** file into the base of your project and commit it.
       > git add . && git commit -m "first commit" && git push origin master
   - The pipeline will now kick off and you can monitor its progress.

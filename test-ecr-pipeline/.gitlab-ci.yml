@@ -1,7 +1,7 @@
 image: docker:latest
 
 variables:
-REPOSITORY_URL: [ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com/[NAMESPACE]/[REPO]
+  REPOSITORY_URL: [ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com/[NAMESPACE]/[REPO]
   REGION: us-east-1
 
 before_script:

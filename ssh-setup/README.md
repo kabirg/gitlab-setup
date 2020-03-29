@@ -63,6 +63,8 @@ Public SSH keys will bind to your GitLab account. For that reason they need to b
               IdentityFile ~/.ssh/gitlab/id_rsa
 
     - Make sure to point **Host** to your domain.
+  - Copy the contents of **id_rsa.pub** (the public key)
+  - GitLab Console > Settings > SSH Keys > paste your key and save.
 
 
 You should now be able to validate SSH connectivity and clone repo's from your GitLab instance.

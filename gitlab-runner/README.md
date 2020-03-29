@@ -22,7 +22,7 @@ We want to store the cert in a directory in the container that maps to a volume 
 **Steps:**
   - Open a bash session in the runner container:
       > docker exec -it gitlab-runner /bin/bash
-  - Store the cert here:
+  - Store the cert here (make the directory if it doesn't exist):
       > /etc/gitlab-runner/certs/
 
 
@@ -49,4 +49,4 @@ Get the registration token:
           --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
           --tls-ca-file "/etc/gitlab-runner/certs/example.com.crt"
 
-You can verify the registration in the GitLab console. The newly registered runner should appear in the **"Activated Runners"** section of the project's CI/CD settings.
+You can verify the registration in the GitLab console. The newly registered runner should appear in an **"Activated Runners"** section of the project's CI/CD settings (under **Runners**).

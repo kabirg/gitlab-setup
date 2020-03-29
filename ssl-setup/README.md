@@ -69,3 +69,4 @@ Back in the docker-compose file:
         docker-compose up -d
 
 You should now be able to access your Gitlab instance via the HTTPS URL!
+*(you might need to clear your browser cache if you can't access the website)*
