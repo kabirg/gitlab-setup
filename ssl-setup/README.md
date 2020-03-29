@@ -7,7 +7,7 @@ At a high-level, we need to:
 
 
 ## Create the Private Key:
-    openssl genrsa -out *example.com*.key 2048
+    openssl genrsa -out example.com.key 2048
 
 Use your domain in place of *example.com*
 
@@ -44,7 +44,7 @@ Again use your domain in place of *example.com*
 SSH into the Gitlab instance...
   - Open a bash session in Gitlab container:
 
-        sudo docker exec -it gitlab /bin/bash
+        docker exec -it gitlab /bin/bash
 
   - Make the target location if it doesn't already exist:
 
@@ -52,7 +52,7 @@ SSH into the Gitlab instance...
         chmod 755 /etc/gitlab/ssl
 
   - Copy/paste the key and cert into this directory.
-  - Run ***sudo gitlab-ctl reconfigure***
+  - Run ***gitlab-ctl reconfigure***
 
 
 ## Update GitLab's NGINX Configuration with the Cert Info

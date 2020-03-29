@@ -21,6 +21,7 @@ The terraform template in this directory will deploy:
   - ***cd*** into this directory *(make sure you have Terraform installed)*
   - Run ***terraform init***
   - Run ***terraform apply***
+  - Login to both instances and make sure you can run ***docker ps*** (it might take a couple minutes).
 
 
 ## 2 - gitlab-instance

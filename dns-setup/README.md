@@ -27,7 +27,7 @@ This allows us to resolve the hostname to an IP.
 The process varies depending on which registrar you went with. But to use GoDaddy as an example:
   - GoDaddy GUI > navigate to 'Domains' > 'All Domains' > Select your domain.
   - Click on 'Manage DNS'.
-  - Add all 4 AWS nameservers and their IP's (you can ping the nameservers to get their IP's).
+  - Update the nameserver(s)/IP's to instead use the 4 provided by AWS. You'll also need to input their IP's (you can ping the nameservers to get their IP's).
 
     > It can take anywhere from a few minutes, to up to 48 hours for the DNS changes to take effect.
 
