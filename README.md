@@ -104,7 +104,7 @@ At a high-level this pipeline will:
 
 **Steps:**
   - Create a repository in AWS ECR
-      > When prompted to enter a repo name, you can optionally prepend a namespace to the repo-name, with the convention ***<namespace-name>/<repo-name>***. This is a good way to organize your repos.
+      > When prompted to enter a repo name, you can optionally prepend a namespace to the repo-name, with the convention ***NAMESPACE_NAME/REPO_NAME***. This is a good way to organize your repos.
       >
       > Ex: ***example-namespace/example-repo***
   - Create a new project in GitLab for our ECR pipeline and clone it locally.
