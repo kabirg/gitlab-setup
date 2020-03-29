@@ -2,7 +2,7 @@
 
 Step-by-step instructions on setting up a Gitlab Environment and Pipeline.
 
-Clone this repo and go through the directories as listed below in order, to go through this walkthrough....
+Clone this repo and go through the directories as listed below in order, to complete this walkthrough....
 
 
 ## 1 - aws_infrastructure
@@ -38,8 +38,8 @@ Contains a Docker-Compose file that deploys a Gitlab container. This will be dep
       > docker logs -f gitlab
 
 You should now be able to access the Gitlab instance from your browser (if you can't, you may need to reboot the instance first).
-  > You'll be prompted to change your password upon accessing the GUI.
-  > The username is 'root'.
+    > You'll be prompted to change your password upon accessing the GUI.
+    > The username is **root**.
 
 Next, we will setup the domain, DNS, and SSL.
 
@@ -78,6 +78,7 @@ This pipeline will run automatically once it's committed to your Gitlab project 
       > git add . && git commit -m "first commit" && git push origin master
   - The pipeline will now kick off and you can monitor its progress.
       > GitLab GUI > Navigate to your project > CI/CD > Pipelines
+      >
       > You can also click on Jobs, to view the actual jobs running within the pipeline.
 
 
@@ -101,6 +102,7 @@ At a high-level this pipeline will:
 **Steps:**
   - Create a repository in AWS ECR
       > When prompted to enter a repo name, you can optionally prepend a namespace to the repo-name, with the convention ***<namespace-name>/<repo-name>***. This is a good way to organize your repos.
+      > 
       > Ex: ***example-namespace/example-repo***
   - Create a new project in GitLab for our ECR pipeline and clone it locally.
   - Copy the test-ecr-pipeline directory contents into the base of the project.
