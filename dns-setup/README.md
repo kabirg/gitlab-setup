@@ -16,7 +16,7 @@ We'll use *example.com* as an example domain.
       > **SOA record**: contains information about your domain.
   - Create an A record in the hosted zone and point it to the public IP of your Gitlab server.
   - Validate DNS is setup for your domain:
-      > ***nslookup example.com <nameserver>***
+      > ***nslookup example.com [NAMESERVER]***
       >
       > For the **nslookup** command, you can use the domain name of any of your nameservers (found in the NS record)
 
@@ -39,7 +39,7 @@ Back in the docker-compose file in the Gitlab server:
   - Update the **hostname**/**external_url** parameters by swapping the IP for the new domain.
   - Apply the changes:
       > docker-compose down
-      > 
+      >
       > docker-compose up -d
 
 You should now be able to access Gitlab via the domain-name URL. Now to setup SSL!
