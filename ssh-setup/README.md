@@ -61,9 +61,10 @@ Public SSH keys will bind to your GitLab account. For that reason they need to b
            Host example.com
               Preferredauthentications publickey
               IdentityFile ~/.ssh/gitlab/id_rsa
-              
+
     - Make sure to point **Host** to your domain.
 
 
 You should now be able to validate SSH connectivity and clone repo's from your GitLab instance.
-    > ssh -T git@example.com -p 2222
+
+    ssh -T git@example.com -p 2222
