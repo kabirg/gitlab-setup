@@ -1,4 +1,4 @@
-# Setup SSH to Clone Repo's
+# Setup SSH to Clone Repositories
 
 We now need to be able to SSH into GitLab instance so that we can clone our repo's.
 

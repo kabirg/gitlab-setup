@@ -3,7 +3,7 @@
 At a high-level, we need to:
   - Create a private key
   - Create a CSR (a request for a certificate)
-  - Get the certificate (we will sign it ourselves - a *self-signed certificate*)
+  - Get the certificate (we will sign it ourselves with the private key - a *self-signed certificate*)
 
 
 ## Create the Private Key:
@@ -18,9 +18,13 @@ Use your domain in place of *example.com*
 Again use your domain in place of *example.com*
 
   > This is the order request for the cert.
+  >
   > You’ll be prompted to specify information like your email, org, and the Common Name.
+  >
   > **Common Name**: the domain that you’re requesting the cert for.
+  >
   > Once the CSR is created, you either send it to a CA (Certificate Authority) to sign, or you can sign it yourself (using your private key and the x509 command).
+  > 
   > We're going to do the latter and sign it ourselves...
 
 
