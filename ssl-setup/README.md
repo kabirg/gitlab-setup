@@ -57,7 +57,7 @@ SSH into the Gitlab instance...
 
 ## Update GitLab's NGINX Configuration with the Cert Info
 Back in the docker-compose file:
-  - Update **external_url** to us *https* instead of *http*
+  - Update **external_url** to use *https* instead of *http*
   - Add the following code to the GITLAB_OMNIBUS_CONFIG (under the external_url):
 
         nginx['ssl_certificate'] = '/etc/gitlab/ssl/example.com.crt'
