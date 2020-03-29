@@ -11,7 +11,8 @@ We now need to be able to SSH into GitLab instance so that we can clone our repo
 ## 1 - The SSH Port
 The reason we SSH into port 2222 is because we mapped the GitLab container's port-22 to the host's port-2222.
   - Since the SSHD service is already listening on port 22 on the host, you can't map the container's port to that port (since it's already in use). Hence why we mapped it to 2222.
-  - The docker-compose file's *gitlab_rails['gitlab_shell_ssh_port']* OMNIBUS config directs our SSH requests to port 2222.
+  - The docker-compose file's ***gitlab_rails['gitlab_shell_ssh_port']*** OMNIBUS config directs our SSH requests to port 2222.
+      > OMNIBUS is a parameter that accepts a variety of arguments that all directly modfity **gitlab.rb** (GitLab's central configuration file)
 
 
 ## 2 - Creating a Unique SSH Key
