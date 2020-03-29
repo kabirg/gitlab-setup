@@ -91,22 +91,22 @@ GitLab runners are capable of implementing different types of "executors" to run
   - We have used the Docker executor in the setup of our runner.
 
 If you want your CI/CD pipeline to build/test/deploy docker images, there are several way to enable the use of docker commands in your builds. If you're using the docker executor, you can bind the **/var/run/docker.sock** mount to the runner container when deploying/registering it. This makes the Docker engine (installed on our EC2 instance) available in the context of the runner-container.
-  > This is the way we've done it (in the gitlab-runner directory, you can verify that we are using the docker executor and mounting **/var/run/docker.sock** to the container)
+     > This is the way we've done it (in the gitlab-runner directory, you can verify that we are using the docker executor and mounting **/var/run/docker.sock** to the container)
 
 At a high-level this pipeline will:
   - Use the docker executor to pull the latest docker image (declared at the top of the **.gitlab-ci.yml** pipeline script)
   - Run a new container based off that image and clone your repo code into it.
   - Run a pre-job script to install some dependencies and login to ECR.
-  - Execute the *build* job to build your local Dockerfile into an image, tag it with the latest commit ID, and push it up to your ECR repo.
+  - Execute the **build** job to build your local Dockerfile into an image, tag it with the latest commit ID, and push it up to your ECR repo.
 
 **Steps:**
   - Create a repository in AWS ECR
       > When prompted to enter a repo name, you can optionally prepend a namespace to the repo-name, with the convention ***<namespace-name>/<repo-name>***. This is a good way to organize your repos.
-      > 
+      >
       > Ex: ***example-namespace/example-repo***
   - Create a new project in GitLab for our ECR pipeline and clone it locally.
-  - Copy the test-ecr-pipeline directory contents into the base of the project.
-      > Make sure to modify the repo-URL variable in .gitlab-ci.ymal to your ECR URI.
+  - Copy the contents of this directory into the base of the project.
+      > Make sure to modify the repo-URL variable in **.gitlab-ci.yml** to your ECR URI.
   - Enable the runner for this new project:
       > GitLab GUI > navigate to your project > Settings > CI/CD > Runners > Scroll down to the runner and click *"enable for this project"*
   - Before we commit anything to the repo and kick off the pipeline, we need to set the environment variables for our project to use our AWS account credentials.
