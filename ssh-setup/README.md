@@ -31,7 +31,7 @@ By the end, you should be able to run the following to validate SSH connectivity
     ssh -T git@example.com -p 2222
 
 You should get a message saying:
-  > Welcome to GitLab, @<USERNAME>!
+  > Welcome to GitLab, @USERNAME!
 
 
 ### Option 1 - If you don't already have an SSH key
@@ -48,17 +48,20 @@ Public SSH keys will bind to your GitLab account. For that reason they need to b
   - Generate a new SSH key
       > ssh-keygen -t rsa -b 4096 -C "email@example.com"
   - Use a new directory to store this key into, when prompted
-      > **/Users/<NAME>/.ssh/gitlab** <-- is what I used.
+      > **/Users/USER_NAME/.ssh/gitlab** <-- is what I used.
   - Load this new key into the SSH agent:
       > eval "$(ssh-agent -s)"
+      >
       > ssh-add ~/.ssh/gitlab/id_rsa
   - We also need to persist this setting by adding it to a config file:
     - Create a file named ***config*** in your **~/.ssh** directory.
     - In the file add the following contents:
-          > # Private GitLab instance
-          > Host example.com
-          >   Preferredauthentications publickey
-          >   IdentityFile ~/.ssh/gitlab/id_rsa
+
+           # Private GitLab instance
+           Host example.com
+              Preferredauthentications publickey
+              IdentityFile ~/.ssh/gitlab/id_rsa
+              
     - Make sure to point **Host** to your domain.
 
 
