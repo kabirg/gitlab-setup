@@ -19,7 +19,7 @@ We want to store the cert in a directory in the container that maps to a volume 
 
 **Steps:**
   - Open a bash session in the runner container:
-        docker exec -it gitlab-runner /bin/bash
+      > docker exec -it gitlab-runner /bin/bash
   - Store the cert here:
       > /etc/gitlab-runner/certs/
 

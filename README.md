@@ -31,11 +31,11 @@ Contains a Docker-Compose file that deploys a Gitlab container. This will be dep
   - ***SSH*** into the EC2 instance and create the file anywhere on the machine.
     - Swap the **hostname**/**external_url** parameter-values with the public IP of your EC2 instance.
   - In the same directory where you have created the file, run:
-        docker-compose up -d
+      > docker-compose up -d
   - Verify that the container is running:
-        docker ps (wait until the Status is 'healthy')
+      > docker ps (wait until the Status is 'healthy')
   - If there are any errors, check the real-time logs:
-        docker logs -f gitlab
+      > docker logs -f gitlab
 
 You should now be able to access the Gitlab instance from your browser (if you can't, you may need to reboot the instance first).
   > You'll be prompted to change your password upon accessing the GUI.
@@ -75,7 +75,7 @@ This pipeline will run automatically once it's committed to your Gitlab project 
 **Steps:**
   - Clone your test project down locally if you haven't already.
   - Copy/paste the **gitlab-ci.yml** file into the base of your project and commit it.
-      git add . && git commit -m "first commit" && git push origin master
+      > git add . && git commit -m "first commit" && git push origin master
   - The pipeline will now kick off and you can monitor its progress.
       > GitLab GUI > Navigate to your project > CI/CD > Pipelines
       > You can also click on Jobs, to view the actual jobs running within the pipeline.

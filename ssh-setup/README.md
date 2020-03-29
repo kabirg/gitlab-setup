@@ -34,7 +34,7 @@ You should get a message saying:
 
 ### Option 1 - If you don't already have an SSH key
   - Generate a new SSH key
-      ssh-keygen -t rsa -b 4096 -C "email@example.com"
+      > ssh-keygen -t rsa -b 4096 -C "email@example.com"
   - Use all the default values when prompted.
   - Copy the contents of **id_rsa.pub** (the public key)
   - GitLab Console > Settings > SSH Keys > paste your key and save.
@@ -44,19 +44,19 @@ You should get a message saying:
 Public SSH keys will bind to your GitLab account. For that reason they need to be unique to GitLab. So if you already have a private key we'll need to create a new one.
 
   - Generate a new SSH key
-      ssh-keygen -t rsa -b 4096 -C "email@example.com"
+      > ssh-keygen -t rsa -b 4096 -C "email@example.com"
   - Use a new directory to store this key into, when prompted
-      **/Users/<NAME>/.ssh/gitlab** <-- is what I used.
+      > **/Users/<NAME>/.ssh/gitlab** <-- is what I used.
   - Load this new key into the SSH agent:
-      eval "$(ssh-agent -s)"
-      ssh-add ~/.ssh/gitlab/id_rsa
+      > eval "$(ssh-agent -s)"
+      > ssh-add ~/.ssh/gitlab/id_rsa
   - We also need to persist this setting by adding it to a config file:
     - Create a file named ***config*** in your **~/.ssh** directory.
     - In the file add the following contents:
-          # Private GitLab instance
-          Host example.com
-              Preferredauthentications publickey
-              IdentityFile ~/.ssh/gitlab/id_rsa
+          > # Private GitLab instance
+          > Host example.com
+          >   Preferredauthentications publickey
+          >   IdentityFile ~/.ssh/gitlab/id_rsa
     - Make sure to point **Host** to your domain.
 
 

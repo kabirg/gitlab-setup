@@ -39,8 +39,8 @@ SSH into the Gitlab instance...
   - Open a bash session in Gitlab container:
     sudo docker exec -it gitlab /bin/bash
   - Make the target location if it doesn't already exist:
-    mkdir -p /etc/gitlab/ssl
-    chmod 755 /etc/gitlab/ssl
+      > mkdir -p /etc/gitlab/ssl
+      > chmod 755 /etc/gitlab/ssl
   - Copy/paste the key and cert into this directory.
   - Run ***sudo gitlab-ctl reconfigure***
 
@@ -49,10 +49,10 @@ SSH into the Gitlab instance...
 Back in the docker-compose file:
   - Update **external_url** to us *https* instead of *http*
   - Add the following code to the GITLAB_OMNIBUS_CONFIG (under the external_url):
-      nginx['ssl_certificate'] = '/etc/gitlab/ssl/example.com.crt'
-      nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/example.com.key'
+      > nginx['ssl_certificate'] = '/etc/gitlab/ssl/example.com.crt'
+      > nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/example.com.key'
   - Apply the changes:
-      docker-compose down
-      docker-compose up -d
+      > docker-compose down
+      > docker-compose up -d
 
 You should now be able to access your Gitlab instance via the HTTPS URL!

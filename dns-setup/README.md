@@ -36,7 +36,7 @@ Verify that the configuration is in effect by pinging your domain.
 Back in the docker-compose file in the Gitlab server:
   - Update the **hostname**/**external_url** parameters by swapping the IP for the new domain.
   - Apply the changes:
-      docker-compose down
-      docker-compose up -d
+      > docker-compose down
+      > docker-compose up -d
 
 You should now be able to access Gitlab via the domain-name URL. Now to setup SSL!
