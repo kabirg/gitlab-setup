@@ -3,6 +3,7 @@
 
 ## Run the GitLab Runner Container
 On the other EC2 instance, run the following command to deploy a runner container:
+
     docker run -d --name gitlab-runner --restart always \
      -v /srv/gitlab-runner/config:/etc/gitlab-runner \
      -v /var/run/docker.sock:/var/run/docker.sock \
