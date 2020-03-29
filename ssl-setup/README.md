@@ -24,7 +24,7 @@ Again use your domain in place of *example.com*
   > **Common Name**: the domain that you’re requesting the cert for.
   >
   > Once the CSR is created, you either send it to a CA (Certificate Authority) to sign, or you can sign it yourself (using your private key and the x509 command).
-  > 
+  >
   > We're going to do the latter and sign it ourselves...
 
 
@@ -34,7 +34,9 @@ Again use your domain in place of *example.com*
 Again use your domain in place of *example.com*
 
   > The contents of this cert will be **base64 (PEM) encoded**, which is what we want (as opposed to binary (DER) encoding).
+  >
   > It doesn't matter if the resulting file is a **.pem** or **.crt**, those are just file extensions. What matters is that the contents of the file are PEM encoded, which this command should do.
+  >
   > You can verify this by **cat**'ing the file and making sure it is in human-readable format.
 
 
@@ -44,6 +46,7 @@ SSH into the Gitlab instance...
     sudo docker exec -it gitlab /bin/bash
   - Make the target location if it doesn't already exist:
       > mkdir -p /etc/gitlab/ssl
+      >
       > chmod 755 /etc/gitlab/ssl
   - Copy/paste the key and cert into this directory.
   - Run ***sudo gitlab-ctl reconfigure***
@@ -53,10 +56,13 @@ SSH into the Gitlab instance...
 Back in the docker-compose file:
   - Update **external_url** to us *https* instead of *http*
   - Add the following code to the GITLAB_OMNIBUS_CONFIG (under the external_url):
-      > nginx['ssl_certificate'] = '/etc/gitlab/ssl/example.com.crt'
-      > nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/example.com.key'
+
+        nginx['ssl_certificate'] = '/etc/gitlab/ssl/example.com.crt'
+        nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/example.com.key'
+        
   - Apply the changes:
-      > docker-compose down
-      > docker-compose up -d
+
+        docker-compose down
+        docker-compose up -d
 
 You should now be able to access your Gitlab instance via the HTTPS URL!
