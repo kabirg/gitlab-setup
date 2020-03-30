@@ -39,8 +39,8 @@ Contains a Docker-Compose file that deploys a Gitlab container. This will be dep
       > docker logs -f gitlab
 
 You should now be able to access the Gitlab instance from your browser (if you can't, you may need to reboot the instance first).
-    > You'll be prompted to change your password upon accessing the GUI.
-    > The username is **root**.
+      > You'll be prompted to change your password upon accessing the GUI.
+      > The username is **root**.
 
 Next, we will setup the domain, DNS, and SSL.
 
