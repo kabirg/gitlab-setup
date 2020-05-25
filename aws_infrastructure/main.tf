@@ -41,7 +41,7 @@ variable "instance_ami" {
   default = "ami-2051294a"
 }
 
-# Gitlab requires an instance with 1 core and 8GB RAM minimum.
+# Gitlab requires an instance with at least 1 core and 8GB RAM minimum.
 # https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements
 variable "instance_type" {
   type = string
@@ -97,7 +97,7 @@ resource "aws_internet_gateway" "igw" {
 # SG
 resource "aws_security_group" "public-sg" {
   name        = "${var.component_name}-public-sg"
-  description = "Allow inbound SSH/HTTP(s) traffic to the public subnet"
+  description = "Allow inbound ICMP/SSH/HTTP(s) traffic to the public subnet"
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
@@ -129,7 +129,7 @@ resource "aws_security_group" "public-sg" {
   }
 
   ingress {
-    from_port   = 8
+    from_port   = 0
     to_port     = 0
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
@@ -176,7 +176,7 @@ resource "aws_instance" "instance" {
     Name = "${var.component_name}-instance"
   }
 
-  # Installs Docker & Docker Compose on an RHEL8 Instance
+  # Installs Docker & Docker Compose on a RHEL8 Instance
   # user_data = <<-EOF
   #             #!/bin/bash
   #             dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
