@@ -1,23 +1,39 @@
+image: docker:stable
+
+variables:
+  ECR_URI: 637661158709.dkr.ecr.us-east-1.amazonaws.com
+  ECR_NAMESPACE: my_images
+  IMAGE_NAME: cfn_nag
+  AWS_REGION: us-east-1
+
+before_script:
+  - apk add --no-cache python py-pip
+  - pip install awscli
+  - $(aws ecr get-login --no-include-email --region "${AWS_REGION}")
+
 stages:
   - build
-  - test
+  - deploy
+  - post
 
-build:
+build_image:
   stage: build
   script:
-    - echo "this is building"
-    - hostname
-    - mkdir builds
-    - touch builds/data.txt
-    - echo "true" > builds/data.txt
-  artifacts:
-    paths:
-      - builds/
+    - docker build --tag $IMAGE_NAME .
+    - docker tag $IMAGE_NAME $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest
+  only:
+    - master
 
-test:
-  stage: test
+deploy_image:
+  stage: deploy
   script:
-    - echo "this is testing"
-    - hostname
-    - test -f builds/data.txt
-    - grep "true" builds/data.txt
+    - docker push $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest
+  only:
+    - master
+
+post_processing:
+  stage: post
+  script:
+    - docker rmi $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest
+  only:
+    - master
