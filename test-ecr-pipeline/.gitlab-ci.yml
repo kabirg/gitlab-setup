@@ -1,27 +1,33 @@
-image: docker:latest
-
 variables:
-  REPOSITORY_URL: [ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com/[NAMESPACE]/[REPO]
   REGION: us-east-1
-
-before_script:
-  - apk add --no-cache curl jq python py-pip
-  - pip install awscli
-  - $(aws ecr get-login --no-include-email --region "${REGION}")
-  - IMAGE_TAG="$(echo $CI_COMMIT_SHA | head -c 8)"
+  CFN_NAG_IMAGE: 637661158709.dkr.ecr.us-east-1.amazonaws.com/my_images/cfn_nag:latest
+  EXTERNAL_AWSCLI_IMAGE: tstrohmeier/awscli:latest
+  AWS_REGION: us-east-1
 
 stages:
-  - build
+  - test
+  - deploy
 
-build:
-  stage: build
+cfn_nag_test:
+  image: $CFN_NAG_IMAGE
+  stage: test
   script:
-    - echo "Building image..."
-    - docker build -t $REPOSITORY_URL:latest .
-    - echo "Tagging image..."
-    - docker tag $REPOSITORY_URL:latest $REPOSITORY_URL:$IMAGE_TAG
-    - echo "Pushing image..."
-    - docker push $REPOSITORY_URL:latest
-    - docker push $REPOSITORY_URL:$IMAGE_TAG
+    - pwd
+    - ls -la
+    - cfn_nag s3_bucket.yaml
+  only:
+    - master
+ build:
+  stage: deploy
+  image: $EXTERNAL_AWSCLI_IMAGE
+  script: |
+    aws cloudformation deploy \
+      --template-file s3_bucket.yaml \
+      --stack-name my-test-bucket-stack \
+      --parameter-overrides \
+        BucketName=kabirg12345 \
+      --tags \
+        Type=gitlab-pipeline-test \
+      --region $AWS_REGION
   only:
     - master

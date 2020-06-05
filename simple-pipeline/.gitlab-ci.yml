@@ -19,8 +19,7 @@ stages:
 build_image:
   stage: build
   script:
-    - docker build --tag $IMAGE_NAME .
-    - docker tag $IMAGE_NAME $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest
+    - docker build --tag $IMAGE_NAME $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest .
   only:
     - master
 
