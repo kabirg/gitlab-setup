@@ -17,7 +17,8 @@ cfn_nag_test:
     - cfn_nag s3_bucket.yaml
   only:
     - master
- build:
+
+cfn_deploy:
   stage: deploy
   image: $EXTERNAL_AWSCLI_IMAGE
   script: |
