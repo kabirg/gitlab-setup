@@ -1,26 +1,23 @@
+image: 637661158709.dkr.ecr.us-east-1.amazonaws.com/sandbox_namespace/aws_cli:latest
+
 variables:
-  REGION: us-east-1
-  CFN_NAG_IMAGE: 637661158709.dkr.ecr.us-east-1.amazonaws.com/my_images/cfn_nag:latest
-  EXTERNAL_AWSCLI_IMAGE: tstrohmeier/awscli:latest
   AWS_REGION: us-east-1
 
 stages:
   - test
   - deploy
 
-cfn_nag_test:
-  image: $CFN_NAG_IMAGE
+cfn_test:
   stage: test
-  script:
-    - pwd
-    - ls -la
-    - cfn_nag s3_bucket.yaml
+  script: |
+    aws cloudformation validate-template \
+      --template-body file://s3_bucket.yaml \
+      --region $AWS_REGION
   only:
     - master
 
 cfn_deploy:
   stage: deploy
-  image: $EXTERNAL_AWSCLI_IMAGE
   script: |
     aws cloudformation deploy \
       --template-file s3_bucket.yaml \

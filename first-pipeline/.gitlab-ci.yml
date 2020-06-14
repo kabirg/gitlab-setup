@@ -2,12 +2,12 @@ image: docker:stable
 
 variables:
   ECR_URI: 637661158709.dkr.ecr.us-east-1.amazonaws.com
-  ECR_NAMESPACE: my_images
-  IMAGE_NAME: cfn_nag
+  ECR_NAMESPACE: sandbox_namespace
+  IMAGE_NAME: aws_cli
   AWS_REGION: us-east-1
 
 before_script:
-  - apk add --no-cache python py-pip
+  - apk add --no-cache python3 py-pip
   - pip install awscli
   - $(aws ecr get-login --no-include-email --region "${AWS_REGION}")
 
@@ -19,7 +19,7 @@ stages:
 build_image:
   stage: build
   script:
-    - docker build --tag $IMAGE_NAME $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest .
+    - docker build --tag $ECR_URI/$ECR_NAMESPACE/$IMAGE_NAME:latest .
   only:
     - master
 

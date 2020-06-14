@@ -43,10 +43,15 @@ variable "instance_ami" {
 
 # Gitlab requires an instance with at least 1 core and 8GB RAM minimum.
 # https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements
-variable "instance_type" {
-  type = string
+variable "instance_types" {
+  type = list
   description = "Instance type"
-  default = "m4.large"
+  default = ["m4.large", "t2.medium"]
+}
+
+variable "instance_names" {
+  type = list
+  default = ["gitlab-ci", "gitlab-runner"]
 }
 
 # EC2 Keypair needs to pre-exist
@@ -128,9 +133,10 @@ resource "aws_security_group" "public-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Allow all ICMP traffic for pings
   ingress {
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -141,7 +147,6 @@ resource "aws_security_group" "public-sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 }
 
 #ROUTE TABLE FOR PUBLIC SUBNET
@@ -168,12 +173,13 @@ resource "aws_instance" "instance" {
   ami                         = var.instance_ami
   associate_public_ip_address = true
   availability_zone           = "us-east-1a"
-  instance_type               = var.instance_type
+  instance_type               = element(var.instance_types, count.index)
+  iam_instance_profile        = aws_iam_instance_profile.runner_profile.name
   key_name                    = var.instance_key_pair
   subnet_id                   = aws_subnet.public-subnet.id
   vpc_security_group_ids      = [aws_security_group.public-sg.id]
   tags = {
-    Name = "${var.component_name}-instance"
+    Name = "${var.component_name}-${element(var.instance_names, count.index)}"
   }
 
   # Installs Docker & Docker Compose on a RHEL8 Instance
@@ -185,10 +191,12 @@ resource "aws_instance" "instance" {
   #             usermod -aG docker ec2-user
   #             EOF
 
-  # Installs Docker & Docker Compose on an RHEL7 Instance
+  # Installs Docker, Docker Compose, and AWS CLI on an RHEL7 Instance
+  # Useful doc: https://docs.mirantis.com/docker-enterprise/v3.0/dockeree-products/docker-engine-enterprise/dee-linux/rhel.html
   user_data = <<-EOF
               #!/bin/bash
               yum update -y
+              yum install -y git unzip
               yum install -y yum-utils device-mapper-persistent-data lvm2
               yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
               yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.107-3.el7.noarch.rpm
@@ -196,9 +204,12 @@ resource "aws_instance" "instance" {
               systemctl start docker
               systemctl enable docker
               usermod -aG docker ec2-user
+              newgrp docker
               curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              newgrp docker
+              curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+              unzip awscli-bundle.zip
+              ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
               EOF
 }
 
@@ -210,6 +221,41 @@ resource "aws_eip" "eip" {
 resource "aws_eip_association" "eip_assoc" {
   instance_id   = aws_instance.instance.0.id
   allocation_id = aws_eip.eip.id
+}
+
+# IAM POLICIES/PERMISSIONS FOR RUNNER
+resource "aws_iam_role" "gitlab-runner-role" {
+  name               = "gitlab-runner-iam-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+data "aws_iam_policy" "AdminAccess" {
+  arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+resource "aws_iam_policy_attachment" "runner-policy-attachment" {
+  name       = "runner-policy-attachment"
+  roles       = [aws_iam_role.gitlab-runner-role.name]
+  policy_arn = data.aws_iam_policy.AdminAccess.arn
+}
+
+resource "aws_iam_instance_profile" "runner_profile" {
+  name  = "runner_profile"
+  role = aws_iam_role.gitlab-runner-role.name
 }
 
 #############
