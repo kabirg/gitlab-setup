@@ -1,4 +1,4 @@
-image: 637661158709.dkr.ecr.us-east-1.amazonaws.com/sandbox_namespace/aws_cli:latest
+image: [AWS_ACCOUNT].dkr.ecr.us-east-1.amazonaws.com/sandbox_namespace/aws_cli:latest
 
 variables:
   AWS_REGION: us-east-1
