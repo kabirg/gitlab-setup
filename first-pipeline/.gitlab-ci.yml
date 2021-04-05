@@ -1,7 +1,7 @@
 image: docker:stable
 
 variables:
-  ECR_URI: 637661158709.dkr.ecr.us-east-1.amazonaws.com
+  ECR_URI: [ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com
   ECR_NAMESPACE: sandbox_namespace
   IMAGE_NAME: aws_cli
   AWS_REGION: us-east-1

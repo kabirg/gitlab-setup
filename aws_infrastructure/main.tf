@@ -34,11 +34,11 @@ variable "subnet_cidrs" {
   }
 }
 
-# RHEL7 AMI
+# CENTOS 8 AMI
 variable "instance_ami" {
   type = string
   description = "AMI for EC2 instance"
-  default = "ami-2051294a"
+  default = "ami-0c53e2ef93a264665"
 }
 
 # Gitlab requires an instance with at least 1 core and 8GB RAM minimum.
@@ -182,34 +182,25 @@ resource "aws_instance" "instance" {
     Name = "${var.component_name}-${element(var.instance_names, count.index)}"
   }
 
-  # Installs Docker & Docker Compose on a RHEL8 Instance
-  # user_data = <<-EOF
-  #             #!/bin/bash
-  #             dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-  #             dnf install docker-ce --nobest -y
-  #             systemctl enable --now docker
-  #             usermod -aG docker ec2-user
-  #             EOF
-
-  # Installs Docker, Docker Compose, and AWS CLI on an RHEL7 Instance
-  # Useful doc: https://docs.mirantis.com/docker-enterprise/v3.0/dockeree-products/docker-engine-enterprise/dee-linux/rhel.html
+  # Installs Docker, Docker Compose, and AWS CLI on a CentOS8 Instance
+  # Useful doc: https://docs.docker.com/engine/install/centos/
   user_data = <<-EOF
               #!/bin/bash
               yum update -y
-              yum install -y git unzip
+              yum install -y git unzip python3
               yum install -y yum-utils device-mapper-persistent-data lvm2
               yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-              yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.107-3.el7.noarch.rpm
               yum install -y docker-ce docker-ce-cli containerd.io
-              systemctl start docker
-              systemctl enable docker
-              usermod -aG docker ec2-user
+              systemctl start docker && systemctl enable docker
+              usermod -aG docker centos
               newgrp docker
               curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
+              ln -s /usr/bin/python3.6 /usr/bin/python
               curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
               unzip awscli-bundle.zip
               ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+              echo "Userdata script complete!" >> /status.txt
               EOF
 }
 
